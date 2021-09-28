@@ -24,9 +24,9 @@ runs:
         mv ${{ github.action_path }}/tagger.linux ${{ github.action_path }}/tagger
         chmod +x ${{ github.action_path }}/tagger
       shell: bash
-    - run: ${{ github.action_path }}/tagger move -s -p '${{input.prefix}}' ${INPUT_TAG##*/}
+    - run: ${{ github.action_path }}/tagger move -s -p '${{inputs.prefix}}' ${INPUTS_TAG##*/}
       shell: bash
       env:
-        INPUT_TAG: ${{input.tag}}
+        INPUTS_TAG: ${{inputs.tag}}
     - run: rm ${{ github.action_path }}/tagger
       shell: bash
