@@ -1,3 +1,7 @@
+## v0.1.0
+
+- Add to marketplace
+
 ## v0.0.2
 
 - Fix tag movement
