@@ -1,0 +1,35 @@
+name: "Tagger"
+description: "Automatically move your semantic tags on release."
+branding:
+  icon: tag
+  color: orange
+inputs:
+  tag:
+    description: "The new tag. Other tags will be moved to this position."
+    required: true
+    default: ${{ github.ref }}
+  prefix:
+    description: "The prefix of the versions"
+    required: true
+    default: ""
+runs:
+  using: "composite"
+  steps:
+    - uses: robinraju/release-downloader@v1.2
+      with:
+        repository: "fischerscode/tagger"
+        fileName: "tagger.linux"
+        out-file-path: ${{ github.action_path }}
+        latest: true
+    - run: |
+        mv ${{ github.action_path }}/tagger.linux ${{ github.action_path }}/tagger
+        chmod +x ${{ github.action_path }}/tagger
+      shell: bash
+    - run: ${{ github.action_path }}/tagger move -s -p '${{inputs.prefix}}' ${INPUTS_TAG##*/}
+      shell: bash
+      env:
+        INPUTS_TAG: ${{inputs.tag}}
+    - run: rm ${{ github.action_path }}/tagger
+      shell: bash
+    - run: git push origin --tags
+      shell: bash
