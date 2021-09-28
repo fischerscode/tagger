@@ -26,7 +26,7 @@ jobs:
       - run: dart pub get
       - run: mkdir build
       - name: build
-        run: dart2native bin/uptodate.dart -v -o build/${{ matrix.output-name }}
+        run: dart compile exe bin/tagger.dart -v -o build/${{ matrix.output-name }}
       - name: upload to release
         uses: svenstaro/upload-release-action@v2
         with:
