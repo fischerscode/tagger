@@ -31,5 +31,5 @@ runs:
         INPUTS_TAG: ${{inputs.tag}}
     - run: rm ${{ github.action_path }}/tagger
       shell: bash
-    - run: git push origin --tags
+    - run: git push origin --tags --force
       shell: bash
