@@ -6,13 +6,14 @@ on:
       - "created"
 
 jobs:
-  tag:
+  tags:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: fischerscode/tagger@master
-        with:
-          prefix: v
+      - uses: dart-lang/setup-dart@v1
+      - run: dart pub get
+      - run: dart run bin/tagger move -s -p '${{inputs.prefix}}' ${GITHUB_REF##*/}
+      - run: git push origin --tags
 
   build:
     runs-on: ${{ matrix.os }}

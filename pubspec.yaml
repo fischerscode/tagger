@@ -1,6 +1,6 @@
 name: tagger
 description: Automatically move your GitHub Action tags on release.
-version: 0.0.1
+version: 0.0.2
 repository: https://github.com/fischerscode/tagger
 
 environment:
