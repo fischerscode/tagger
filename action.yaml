@@ -20,7 +20,7 @@ runs:
         repository: "fischerscode/tagger"
         fileName: "tagger.linux"
         out-file-path: ${{ github.action_path }}
-        tag: "test"
+        latest: true
     - run: |
         mv ${{ github.action_path }}/tagger.linux ${{ github.action_path }}/tagger
         chmod +x ${{ github.action_path }}/tagger
@@ -30,4 +30,6 @@ runs:
       env:
         INPUTS_TAG: ${{inputs.tag}}
     - run: rm ${{ github.action_path }}/tagger
+      shell: bash
+    - run: git push origin --tags
       shell: bash
