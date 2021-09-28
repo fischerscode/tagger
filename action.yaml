@@ -20,6 +20,7 @@ runs:
         repository: "fischerscode/tagger"
         fileName: "tagger.linux"
         out-file-path: ${{ github.action_path }}
+        tag: ""
     - run: |
         mv ${{ github.action_path }}/tagger.linux ${{ github.action_path }}/tagger
         chmod +x ${{ github.action_path }}/tagger
