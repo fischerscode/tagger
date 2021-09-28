@@ -6,15 +6,6 @@ on:
       - "created"
 
 jobs:
-  tags:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: dart-lang/setup-dart@v1
-      - run: dart pub get
-      - run: dart run bin/tagger.dart move -s -p '${{inputs.prefix}}' ${GITHUB_REF##*/}
-      - run: git push origin --tags
-
   build:
     runs-on: ${{ matrix.os }}
 
@@ -44,3 +35,12 @@ jobs:
           asset_name: ${{ matrix.output-name }}
           tag: ${{ github.ref }}
           overwrite: true
+
+  tags:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: fischerscode/tagger@v0.0
+        with:
+          prefix: v
