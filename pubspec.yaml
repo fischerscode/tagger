@@ -1,4 +1,4 @@
-name: moving_tags
+name: tagger
 description: Automatically move your GitHub Action tags on release.
 # version: 1.0.0
 # homepage: https://www.example.com

@@ -5,8 +5,8 @@ import 'package:shell/shell.dart';
 import 'package:version/version.dart';
 
 void main(List<String> arguments) async {
-  var parser = CommandRunner<int>('movingtags',
-      'Automatically move your semantic tags. When providing the tag \'1.2.3\', \'1\' and \'1.2\' will be moved to the position of \'1.2.3\'.')
+  var parser = CommandRunner<int>('tagger',
+      'Automatically move semantic tags. When providing the tag \'1.2.3\', \'1\' and \'1.2\' will be moved to the position of \'1.2.3\'.')
     ..addCommand(MoveCommand());
 
   try {
