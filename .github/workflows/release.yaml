@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: dart-lang/setup-dart@v1
       - run: dart pub get
-      - run: dart run bin/tagger move -s -p '${{inputs.prefix}}' ${GITHUB_REF##*/}
+      - run: dart run bin/tagger.dart move -s -p '${{inputs.prefix}}' ${GITHUB_REF##*/}
       - run: git push origin --tags
 
   build:
