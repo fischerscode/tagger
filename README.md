@@ -1,7 +1,7 @@
 [![](https://img.shields.io/github/v/release/fischerscode/tagger)](https://github.com/fischerscode/tagger/releases/latest)
 [![](https://img.shields.io/github/license/fischerscode/tagger)](https://github.com/fischerscode/tagger/blob/master/LICENSE)
 
-You can use Tagger either as a [command line tool](#tagger-as-a-command-line-tool) or an [GitHub Action](#tagger-v0-action)
+You can use Tagger either as a [command line tool](#tagger-as-a-command-line-tool) or an [GitHub Action](#tagger-v01-action)
 
 
 # Tagger V0.1 Action
