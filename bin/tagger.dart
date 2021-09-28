@@ -47,6 +47,8 @@ class MoveCommand extends Command<int> {
 
   @override
   Future<int> run() async {
+    final argResults = this.argResults!;
+
     if (argResults.rest.isEmpty) {
       usageException('Must specify a tag.');
     }

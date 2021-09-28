@@ -1,10 +1,10 @@
 name: tagger
 description: Automatically move your GitHub Action tags on release.
-# version: 1.0.0
-# homepage: https://www.example.com
+version: 0.0.1
+repository: https://github.com/fischerscode/tagger
 
 environment:
-  sdk: ">=2.10.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   args: ^2.3.0
