@@ -12,6 +12,10 @@ inputs:
     description: "The prefix of the semantic tags."
     required: true
     default: ""
+  token:
+    description: "The github token."
+    required: true
+    default: ${{ github.token }}
 runs:
   using: "composite"
   steps:
@@ -31,5 +35,7 @@ runs:
         INPUTS_TAG: ${{inputs.tag}}
     - run: rm ${{ github.action_path }}/tagger
       shell: bash
-    - run: git push origin --tags --force
+    - run: |
+        repo="https://${GITHUB_ACTOR}:${INPUT_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+        git push "${remote_repo}" --tags --force
       shell: bash
