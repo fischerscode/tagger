@@ -37,5 +37,5 @@ runs:
       shell: bash
     - run: |
         repo="https://${GITHUB_ACTOR}:${INPUT_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-        git push "${remote_repo}" --tags --force
+        git push "$repo" --tags --force
       shell: bash
