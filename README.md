@@ -7,7 +7,7 @@ You can use Tagger either as a [command line tool](#tagger-as-a-command-line-too
 # Tagger V0.1 Action
 This action automatically moves semantic tags. When providing the tag '1.2.3', '1' and '1.2' will be moved to the position of '1.2.3'.
 
-This action is mend to be run when ever a release has been created.
+This action is meant to be run when ever a release has been created.
 
 ## Usage
 ```yaml
