@@ -19,7 +19,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: robinraju/release-downloader@v1.3
+    - uses: robinraju/release-downloader@v1.7
       with:
         repository: "fischerscode/tagger"
         fileName: "tagger.linux"
