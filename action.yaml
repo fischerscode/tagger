@@ -1,3 +1,4 @@
+---
 name: "Tagger - Move semantic tags!"
 description: "Automatically move your semantic tags on release."
 branding:
@@ -19,23 +20,25 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: robinraju/release-downloader@v1.3
-      with:
-        repository: "fischerscode/tagger"
-        fileName: "tagger.linux"
-        out-file-path: ${{ github.action_path }}
-        tag: v0.1.0
-    - run: |
-        mv ${{ github.action_path }}/tagger.linux ${{ github.action_path }}/tagger
+    - name: Download tagger
+      run: |
+        if [ "${{ runner.os }}" = "Linux" ]; then
+          suffix=linux
+        elif [ "${{ runner.os }}" = "macOS" ]; then
+          suffix=mac
+        else
+          suffix=windows.exe
+        fi
+        wget https://github.com/fischerscode/tagger/releases/download/v0.1.0/tagger.${suffix} -O ${{ github.action_path }}/tagger
         chmod +x ${{ github.action_path }}/tagger
-      shell: bash
-    - run: ${{ github.action_path }}/tagger move -s -p '${{inputs.prefix}}' ${INPUTS_TAG##*/}
+      shell: sh
+    - run: ${{ github.action_path }}/tagger move -s -p '${{ inputs.prefix }}' ${INPUTS_TAG##*/}
       shell: bash
       env:
-        INPUTS_TAG: ${{inputs.tag}}
+        INPUTS_TAG: ${{ inputs.tag }}
     - run: rm ${{ github.action_path }}/tagger
-      shell: bash
+      shell: sh
     - run: |
-        repo="https://${GITHUB_ACTOR}:${INPUT_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+        repo=$(echo "${{ github.repositoryUrl }}" | sed "s,git://,https://${GITHUB_ACTOR}:${INPUT_TOKEN}@,")
         git push "$repo" --tags --force
-      shell: bash
+      shell: sh
