@@ -20,23 +20,36 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Download tagger
+    - name: Collect info
+      id: info
+      run: |
+        if [ "${{ runner.os }}" = "Windows" ]; then
+          bin=${{ runner.temp }}\tagger.exe
+        else
+          bin="${{ runner.temp }}/tagger"
+        fi
+        echo "BIN=$bin" >> $GITHUB_OUTPUT
+      shell: sh
+    - name: Download tagger (Linux, macOS)
+      if: ${{ runner.os != 'Windows' }}
       run: |
         if [ "${{ runner.os }}" = "Linux" ]; then
           suffix=linux
-        elif [ "${{ runner.os }}" = "macOS" ]; then
-          suffix=mac
         else
-          suffix=windows.exe
+          suffix=mac
         fi
-        wget https://github.com/fischerscode/tagger/releases/download/v0.1.0/tagger.${suffix} -O ${{ github.action_path }}/tagger
-        chmod +x ${{ github.action_path }}/tagger
+        wget https://github.com/fischerscode/tagger/releases/download/v0.1.0/tagger.${suffix} -O ${{ steps.info.outputs.BIN }}
+        chmod +x ${{ steps.info.outputs.BIN }}
       shell: sh
-    - run: ${{ github.action_path }}/tagger move -s -p '${{ inputs.prefix }}' ${INPUTS_TAG##*/}
+    - name: Download tagger (Windows)
+      if: ${{ runner.os == 'Windows' }}
+      run: Invoke-WebRequest -URI https://github.com/fischerscode/tagger/releases/download/v0.1.0/tagger.windows.exe -OutFile ${{ steps.info.outputs.BIN }}
+      shell: pwsh
+    - run: ${{ steps.info.outputs.BIN }} move -s -p '${{ inputs.prefix }}' ${INPUTS_TAG##*/}
       shell: bash
       env:
         INPUTS_TAG: ${{ inputs.tag }}
-    - run: rm ${{ github.action_path }}/tagger
+    - run: rm ${{ steps.info.outputs.BIN }}
       shell: sh
     - run: |
         repo=$(echo "${{ github.repositoryUrl }}" | sed "s,git://,https://${GITHUB_ACTOR}:${INPUT_TOKEN}@,")
