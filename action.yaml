@@ -24,7 +24,7 @@ runs:
       id: info
       run: |
         if [ "${{ runner.os }}" = "Windows" ]; then
-          bin=${{ runner.temp }}\tagger.exe
+          bin=${{ runner.temp }}\\tagger.exe
         else
           bin="${{ runner.temp }}/tagger"
         fi
