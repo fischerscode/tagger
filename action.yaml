@@ -24,12 +24,14 @@ runs:
       id: info
       run: |
         if [ "${{ runner.os }}" = "Windows" ]; then
-          bin=${{ runner.temp }}\\tagger.exe
+          bin=$DIR\\tagger.exe
         else
-          bin="${{ runner.temp }}/tagger"
+          bin="$DIR/tagger"
         fi
         echo "BIN=$bin" >> $GITHUB_OUTPUT
       shell: sh
+      env:
+        DIR: ${{ runner.temp }}
     - name: Download tagger (Linux, macOS)
       if: ${{ runner.os != 'Windows' }}
       run: |
@@ -43,14 +45,21 @@ runs:
       shell: sh
     - name: Download tagger (Windows)
       if: ${{ runner.os == 'Windows' }}
-      run: Invoke-WebRequest -URI https://github.com/fischerscode/tagger/releases/download/v0.1.0/tagger.windows.exe -OutFile ${{ steps.info.outputs.BIN }}
+      run: |
+        Invoke-WebRequest -URI https://github.com/fischerscode/tagger/releases/download/v0.1.0/tagger.windows.exe -OutFile $Env:BIN
+        echo "Saved to $Env:BIN"
       shell: pwsh
-    - run: ${{ steps.info.outputs.BIN }} move -s -p '${{ inputs.prefix }}' ${INPUTS_TAG##*/}
+      env:
+        BIN: ${{ steps.info.outputs.BIN }}
+    - run: $BIN move -s -p '${{ inputs.prefix }}' ${INPUTS_TAG##*/}
       shell: bash
       env:
         INPUTS_TAG: ${{ inputs.tag }}
-    - run: rm ${{ steps.info.outputs.BIN }}
+        BIN: ${{ steps.info.outputs.BIN }}
+    - run: rm $BIN
       shell: sh
+      env:
+        BIN: ${{ steps.info.outputs.BIN }}
     - run: |
         repo=$(echo "${{ github.repositoryUrl }}" | sed "s,git://,https://${GITHUB_ACTOR}:${INPUT_TOKEN}@,")
         git push "$repo" --tags --force
