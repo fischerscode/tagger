@@ -49,12 +49,15 @@ runs:
       shell: pwsh
       env:
         BIN: ${{ steps.info.outputs.BIN }}
-    - run: ${{ steps.info.outputs.BIN }} move -s -p '${{ inputs.prefix }}' ${INPUTS_TAG##*/}
+    - run: $BIN move -s -p '${{ inputs.prefix }}' ${INPUTS_TAG##*/}
       shell: bash
       env:
         INPUTS_TAG: ${{ inputs.tag }}
-    - run: rm ${{ steps.info.outputs.BIN }}
+        BIN: ${{ steps.info.outputs.BIN }}
+    - run: rm $BIN
       shell: sh
+      env:
+        BIN: ${{ steps.info.outputs.BIN }}
     - run: |
         repo=$(echo "${{ github.repositoryUrl }}" | sed "s,git://,https://${GITHUB_ACTOR}:${INPUT_TOKEN}@,")
         git push "$repo" --tags --force
