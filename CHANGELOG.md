@@ -1,3 +1,8 @@
+## v0.2.0
+
+- Update dependencies
+- Support macOS & Windows
+
 ## v0.1.0
 
 - Add to marketplace

@@ -40,13 +40,13 @@ runs:
         else
           suffix=mac
         fi
-        wget https://github.com/fischerscode/tagger/releases/download/v0.1.0/tagger.${suffix} -O ${{ steps.info.outputs.BIN }}
+        wget https://github.com/fischerscode/tagger/releases/download/v0.2.0/tagger.${suffix} -O ${{ steps.info.outputs.BIN }}
         chmod +x ${{ steps.info.outputs.BIN }}
       shell: sh
     - name: Download tagger (Windows)
       if: ${{ runner.os == 'Windows' }}
       run: |
-        Invoke-WebRequest -URI https://github.com/fischerscode/tagger/releases/download/v0.1.0/tagger.windows.exe -OutFile $Env:BIN
+        Invoke-WebRequest -URI https://github.com/fischerscode/tagger/releases/download/v0.2.0/tagger.windows.exe -OutFile $Env:BIN
         echo "Saved to $Env:BIN"
       shell: pwsh
       env:
