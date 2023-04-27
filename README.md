@@ -1,10 +1,10 @@
 [![](https://img.shields.io/github/v/release/fischerscode/tagger)](https://github.com/fischerscode/tagger/releases/latest)
 [![](https://img.shields.io/github/license/fischerscode/tagger)](https://github.com/fischerscode/tagger/blob/master/LICENSE)
 
-You can use Tagger either as a [command line tool](#tagger-as-a-command-line-tool) or an [GitHub Action](#tagger-v01-action)
+You can use Tagger either as a [command line tool](#tagger-as-a-command-line-tool) or an [GitHub Action](#tagger-v02-action)
 
 
-# Tagger V0.1 Action
+# Tagger V0.2 Action
 This action automatically moves semantic tags. When providing the tag '1.2.3', '1' and '1.2' will be moved to the position of '1.2.3'.
 
 This action is meant to be run when ever a release has been created.
@@ -24,7 +24,7 @@ jobs:
     steps:
       # You have to check out your repo first.
       - uses: actions/checkout@v2
-      - uses: fischerscode/tagger@v0.1
+      - uses: fischerscode/tagger@v0.2
         with:
           # The prefix of the semantic tags.
           # Default: ''
