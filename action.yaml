@@ -45,7 +45,9 @@ runs:
       shell: sh
     - name: Download tagger (Windows)
       if: ${{ runner.os == 'Windows' }}
-      run: Invoke-WebRequest -URI https://github.com/fischerscode/tagger/releases/download/v0.1.0/tagger.windows.exe -OutFile $BIN
+      run: |
+        Invoke-WebRequest -URI https://github.com/fischerscode/tagger/releases/download/v0.1.0/tagger.windows.exe -OutFile $Env:BIN
+        echo "Saved to $Env:BIN"
       shell: pwsh
       env:
         BIN: ${{ steps.info.outputs.BIN }}
