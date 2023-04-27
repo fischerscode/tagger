@@ -1,3 +1,4 @@
+---
 name: "Tagger - Move semantic tags!"
 description: "Automatically move your semantic tags on release."
 branding:
@@ -19,23 +20,47 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: robinraju/release-downloader@v1.3
-      with:
-        repository: "fischerscode/tagger"
-        fileName: "tagger.linux"
-        out-file-path: ${{ github.action_path }}
-        tag: v0.1.0
-    - run: |
-        mv ${{ github.action_path }}/tagger.linux ${{ github.action_path }}/tagger
-        chmod +x ${{ github.action_path }}/tagger
-      shell: bash
-    - run: ${{ github.action_path }}/tagger move -s -p '${{inputs.prefix}}' ${INPUTS_TAG##*/}
+    - name: Collect info
+      id: info
+      run: |
+        if [ "${{ runner.os }}" = "Windows" ]; then
+          bin=$DIR\\tagger.exe
+        else
+          bin="$DIR/tagger"
+        fi
+        echo "BIN=$bin" >> $GITHUB_OUTPUT
+      shell: sh
+      env:
+        DIR: ${{ runner.temp }}
+    - name: Download tagger (Linux, macOS)
+      if: ${{ runner.os != 'Windows' }}
+      run: |
+        if [ "${{ runner.os }}" = "Linux" ]; then
+          suffix=linux
+        else
+          suffix=mac
+        fi
+        wget https://github.com/fischerscode/tagger/releases/download/v0.1.0/tagger.${suffix} -O ${{ steps.info.outputs.BIN }}
+        chmod +x ${{ steps.info.outputs.BIN }}
+      shell: sh
+    - name: Download tagger (Windows)
+      if: ${{ runner.os == 'Windows' }}
+      run: |
+        Invoke-WebRequest -URI https://github.com/fischerscode/tagger/releases/download/v0.1.0/tagger.windows.exe -OutFile $Env:BIN
+        echo "Saved to $Env:BIN"
+      shell: pwsh
+      env:
+        BIN: ${{ steps.info.outputs.BIN }}
+    - run: $BIN move -s -p '${{ inputs.prefix }}' ${INPUTS_TAG##*/}
       shell: bash
       env:
-        INPUTS_TAG: ${{inputs.tag}}
-    - run: rm ${{ github.action_path }}/tagger
-      shell: bash
+        INPUTS_TAG: ${{ inputs.tag }}
+        BIN: ${{ steps.info.outputs.BIN }}
+    - run: rm $BIN
+      shell: sh
+      env:
+        BIN: ${{ steps.info.outputs.BIN }}
     - run: |
-        repo="https://${GITHUB_ACTOR}:${INPUT_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+        repo=$(echo "${{ github.repositoryUrl }}" | sed "s,git://,https://${GITHUB_ACTOR}:${INPUT_TOKEN}@,")
         git push "$repo" --tags --force
-      shell: bash
+      shell: sh
